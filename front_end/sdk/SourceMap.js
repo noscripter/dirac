@@ -96,6 +96,11 @@ WebInspector.SourceMap.prototype = {
     url: function() { },
 
     /**
+     * @return {?SourceMapV3}
+     */
+    payload: function() { },
+
+    /**
      * @return {!Array<string>}
      */
     sourceURLs: function() { },
@@ -238,6 +243,15 @@ WebInspector.TextSourceMap.prototype = {
     url: function()
     {
         return this._sourceMappingURL;
+    },
+
+    /**
+     * @override
+     * @return {?SourceMapV3}
+     */
+    payload: function()
+    {
+        return this._json;
     },
 
     /**

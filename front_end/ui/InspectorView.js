@@ -360,11 +360,13 @@ WebInspector.InspectorView.prototype = {
         WebInspector.userMetrics.panelShown(panel.name);
         panel.focus();
 
+        dirac.notifyPanelSwitch(panel);
         return panel;
     },
 
     showDrawer: function()
     {
+        dirac.feedback("showDrawer");
         if (!this._drawerTabbedPane.isShowing())
             this._drawerSplitWidget.showBoth();
         this._drawerTabbedPane.focus();

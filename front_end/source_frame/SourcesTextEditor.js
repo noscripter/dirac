@@ -23,6 +23,9 @@ WebInspector.SourcesTextEditor = function(delegate)
     this._delegate = delegate;
 
     this.codeMirror().on("changes", this._changesForDelegate.bind(this));
+    if (dirac.hasInlineCFs) {
+        this.codeMirror().on("update", this._update.bind(this));
+    }
     this.codeMirror().on("cursorActivity", this._cursorActivity.bind(this));
     this.codeMirror().on("gutterClick", this._gutterClick.bind(this));
     this.codeMirror().on("scroll", this._scroll.bind(this));
@@ -480,6 +483,33 @@ WebInspector.SourcesTextEditor.prototype = {
         this._setEditorIndentation(text.split("\n").slice(0, WebInspector.SourcesTextEditor.LinesToScanForIndentationGuessing));
         WebInspector.CodeMirrorTextEditor.prototype.setText.call(this, text);
         delete this._muteTextChangedEvent;
+    },
+
+    _reverseZOrder: function(element, startIndex) {
+        if (!element) {
+            return;
+        }
+        var childNodes = element.childNodes;
+        if (!childNodes) {
+            return;
+        }
+        var zindex = startIndex + childNodes.length - 1;
+        for (var i = 0; i < childNodes.length; i++) {
+            var child = childNodes[i];
+            if (child) {
+                child.style.zIndex = zindex;
+            }
+            zindex--;
+        }
+    },
+
+    _update: function(codeMirror)
+    {
+        var linesDiv = codeMirror.display.lineDiv;
+        // custom formatters can provide expandable decoration widgets,
+        // they expand below and overlay following lines
+        // for this to work nicely, we have to make sure that z-order of code mirror lines is descending
+        this._reverseZOrder(linesDiv, 1);
     },
 
     /**

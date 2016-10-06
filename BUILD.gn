@@ -933,11 +933,15 @@ generated_remote_modules = [
 ]
 
 devtools_applications = [
-  "inspector",
-  "toolbox",
-  "formatter_worker",
-  "heap_snapshot_worker",
-  "temp_storage_shared_worker",
+#### ---->
+# I have intentionally touched this code, so I can get merge conflicts when someone touches these params
+# => go and update scripts/release.sh script
+    "inspector",
+    "toolbox",
+    "formatter_worker",
+    "heap_snapshot_worker",
+    "temp_storage_shared_worker",
+#### <----
 ]
 
 #-------------------------------------------------------------------------------
